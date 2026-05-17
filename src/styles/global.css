@@ -1,0 +1,96 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #0a0a0a;
+  --bg-2:         #111111;
+  --bg-3:         #161616;
+  --bg-4:         #1c1c1c;
+  --border:       #1e1e1e;
+  --border-2:     #2a2a2a;
+  --text:         #e8e8e8;
+  --text-dim:     #888;
+  --text-dimmer:  #555;
+  --accent:       #3b82f6;
+  --accent-dim:   rgba(59,130,246,0.12);
+  --accent-hover: rgba(59,130,246,0.2);
+  --success:      #4ade80;
+  --success-dim:  rgba(74,222,128,0.12);
+  --warning:      #facc15;
+  --warning-dim:  rgba(250,204,21,0.12);
+  --danger:       #f87171;
+  --danger-dim:   rgba(248,113,113,0.12);
+  --sidebar-w:    220px;
+  --header-h:     48px;
+  --radius:       8px;
+  --radius-sm:    4px;
+  --radius-lg:    12px;
+  --transition:   150ms ease;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #444; }
+
+.page {
+  padding: 28px 32px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.page-subtitle {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dimmer);
+  margin-bottom: 12px;
+}
+
+.row { display: flex; align-items: center; gap: 12px; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.gap-4 { gap: 4px; }
+.gap-8 { gap: 8px; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+.flex-1 { flex: 1; }
+.ml-auto { margin-left: auto; }
+.mt-24 { margin-top: 24px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
+.text-danger  { color: var(--danger); }
+.text-dim     { color: var(--text-dim); }
+.text-accent  { color: var(--accent); }
+
+.mono { font-family: 'Consolas', 'Cascadia Code', monospace; }
