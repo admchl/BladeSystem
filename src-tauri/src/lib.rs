@@ -11,6 +11,8 @@ mod processes;
 mod network;
 mod repair;
 mod backup;
+mod setup;
+mod automation;
 
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
@@ -21,6 +23,8 @@ use cleaner::CleanResult;
 use startup::StartupItem;
 use processes::ProcessInfo;
 use network::DnsPreset;
+use setup::{SetupApp, SetupFile, SetupSettings};
+use automation::ScheduledTask;
 
 pub struct AppState {
     pub triggers: TriggerState,
@@ -171,6 +175,55 @@ fn export_settings() -> Result<String, String> {
     backup::export_settings()
 }
 
+// ── Setup ─────────────────────────────────────────────────────────────────────
+
+#[tauri::command]
+fn export_apps() -> Result<SetupFile, String> {
+    setup::export_apps()
+}
+
+#[tauri::command]
+fn save_setup_file(file: SetupFile) -> Result<String, String> {
+    setup::save_setup_file(&file)
+}
+
+#[tauri::command]
+fn load_setup_file(path: String) -> Result<SetupFile, String> {
+    setup::load_setup_file(&path)
+}
+
+#[tauri::command]
+fn run_setup_install(apps: Vec<SetupApp>, settings: SetupSettings, app: AppHandle) {
+    setup::run_install(apps, settings, app);
+}
+
+// ── Automation ────────────────────────────────────────────────────────────────
+
+#[tauri::command]
+fn get_scheduled_tasks() -> Vec<ScheduledTask> {
+    automation::get_scheduled_tasks()
+}
+
+#[tauri::command]
+fn toggle_scheduled_task(task_path: String, task_name: String, enable: bool) -> Result<String, String> {
+    automation::toggle_scheduled_task(&task_path, &task_name, enable)
+}
+
+#[tauri::command]
+fn run_scheduled_task(task_path: String, task_name: String) -> Result<String, String> {
+    automation::run_scheduled_task(&task_path, &task_name)
+}
+
+#[tauri::command]
+fn get_automation_info() -> serde_json::Value {
+    automation::get_windows_automation_info()
+}
+
+#[tauri::command]
+fn launch_blade_automation() -> Result<(), String> {
+    automation::launch_blade_automation()
+}
+
 // ── Window ────────────────────────────────────────────────────────────────────
 
 #[tauri::command]
@@ -182,7 +235,7 @@ fn show_window(app: AppHandle) {
 }
 
 fn spawn_background_loop(app: AppHandle, trigger_state: TriggerState) {
-    tokio::spawn(async move {
+    tauri::async_runtime::spawn(async move {
         let mut interval = tokio::time::interval(Duration::from_secs(5));
         let mut stats_tick = 0u32;
 
@@ -247,6 +300,17 @@ pub fn run() {
             // backup
             run_backup,
             export_settings,
+            // setup
+            export_apps,
+            save_setup_file,
+            load_setup_file,
+            run_setup_install,
+            // automation
+            get_scheduled_tasks,
+            toggle_scheduled_task,
+            run_scheduled_task,
+            get_automation_info,
+            launch_blade_automation,
             // window
             show_window,
         ])

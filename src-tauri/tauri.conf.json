@@ -34,9 +34,5 @@
       "icons/icon.ico"
     ]
   },
-  "plugins": {
-    "shell": {
-      "all": true
-    }
-  }
+  "plugins": {}
 }
